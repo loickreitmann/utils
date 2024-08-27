@@ -81,11 +81,12 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 					return nil, err
 				}
 
-				// set the uploaded file's new file name
+				// set the uploaded file's original and new file names
+				uploadedFile.OriginalFilename = hdr.Filename
 				if renameFiles {
 					uploadedFile.NewFilename = fmt.Sprintf("%s%s", u.RandomString(32), filepath.Ext(hdr.Filename))
 				} else {
-					uploadedFile.NewFilename = hdr.Filename
+					uploadedFile.NewFilename = uploadedFile.OriginalFilename
 				}
 
 				// prepare the output file
