@@ -39,6 +39,22 @@ func (u *Utils) isAllowedType(buffer []byte) bool {
 	return false
 }
 
+// UploadOneFile is a convenience method that calls UploadFiles, but expects only one file to
+// be in the upload.
+func (u *Utils) UploadOneFile(req *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) {
+	renameFile := true
+	if len(rename) > 0 {
+		renameFile = rename[0]
+	}
+
+	uploadedFiles, err := u.UploadFiles(req, uploadDir, renameFile)
+	if err != nil {
+		return nil, err
+	}
+
+	return uploadedFiles[0], nil
+}
+
 // UploadFiles uploads one or more files to the specified `uploadDir` directory. It gives the
 // files a random name. It returns a slice of UploadedFile structs, and potentially an error.
 // If the optional last parameter is set to true, the files won't be renamed.
