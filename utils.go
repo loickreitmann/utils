@@ -10,7 +10,7 @@ var sourceCharacters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW
 // the methods with the *Utils receiver.
 type Utils struct{}
 
-// RandomString generaters and returns a sstring of random characters of a specified length.,
+// RandomString generates and returns a string of a specified length of random characters.
 // The characters are randomnly asembled from the source of the following posible characters:
 // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_+!@#$%*
 func (o *Utils) RandomString(length int) string {
