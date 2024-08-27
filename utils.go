@@ -20,7 +20,7 @@ func (o *Utils) RandomString(length int) string {
 	//  length = int(math.Abs(float64(length)))
 	// but it would
 	if length < 0 {
-		length = length * -1
+		length = -length
 	}
 	randomString := make([]rune, length)
 	for i := range randomString {
