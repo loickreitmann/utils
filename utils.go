@@ -1,3 +1,5 @@
+// Package of simple and well tested reusable Go utilities.
+// Inspired by Trevor Sawler's "Building a Module in Go." Udemy course.
 package utils
 
 import "crypto/rand"
