@@ -102,14 +102,11 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 					uploadedFile.FileSize = fileSize
 				}
 				uploadedFiles = append(uploadedFiles, &uploadedFile)
-
 			}
 		}
+
 		return uploadedFiles, nil
 	}(uploadedFiles)
-	if err != nil {
-		return uploadedFiles, err
-	}
 
-	return uploadedFiles, nil
+	return uploadedFiles, err
 }
