@@ -71,7 +71,9 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 				// check if the file type is allowed for upload receipt
 				isAllowed := u.isAllowedType(buffer)
 				if !isAllowed {
-					return nil, errors.New("the uploaded file type is not allowed")
+					// return nil, errors.New("the uploaded file type is not allowed")
+					// instead of failing out, ignore this file, skip out of this iteration and continue
+					continue
 				}
 
 				_, err = currentFile.Seek(0, 0)
