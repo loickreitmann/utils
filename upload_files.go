@@ -39,6 +39,9 @@ func (u *Utils) isAllowedType(buffer []byte) bool {
 	return false
 }
 
+// UploadFiles uploads one or more files to the specified `uploadDir` directory. It gives the
+// files a random name. It returns a slice of UploadedFile structs, and potentially an error.
+// If the optional last parameter is set to true, the files won't be renamed.
 func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
 	renameFiles := true
 	if len(rename) > 0 {
