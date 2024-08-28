@@ -7,7 +7,7 @@ var sourceCharacters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW
 // RandomString generates and returns a string of a specified length of random characters.
 // The characters are randomnly asembled from the source of the following posible characters:
 // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_+!@#$%*
-func (o *Utils) RandomString(length int) string {
+func (u *Utils) RandomString(length int) string {
 	// Going for performance over readability. Using the below if statement directly operates on
 	// integers without any additional function calls or type conversions.
 	// Could have used:
