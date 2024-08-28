@@ -53,6 +53,41 @@ var uploadTests = []struct {
 	},
 }
 
+func pipeFile(writer *multipart.Writer, testFile string, t *testing.T, wg *sync.WaitGroup) {
+	defer writer.Close()
+	defer wg.Done()
+
+	// create the form data field 'file'
+	part, err := writer.CreateFormFile("file", testFile)
+	if err != nil {
+		t.Error(err)
+	}
+	file, err := os.Open(testFile)
+	if err != nil {
+		t.Error(err)
+	}
+	defer file.Close()
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		t.Error("error decoding image", err)
+	}
+	ext := filepath.Ext(testFile)
+	switch ext {
+	case ".png":
+		if err = png.Encode(part, img); err != nil {
+			t.Error(err)
+		}
+	case ".gif":
+		if err = gif.Encode(part, img, nil); err != nil {
+			t.Error(err)
+		}
+	case ".jpg":
+		if err = jpeg.Encode(part, img, nil); err != nil {
+			t.Error(err)
+		}
+	}
+}
 func TestUtils_UploadFiles(t *testing.T) {
 	wg := sync.WaitGroup{}
 	for _, ut := range uploadTests {
@@ -63,41 +98,7 @@ func TestUtils_UploadFiles(t *testing.T) {
 			writer := multipart.NewWriter(pw)
 			wg.Add(1)
 
-			go func() {
-				defer writer.Close()
-				defer wg.Done()
-
-				// create the form data field 'file'
-				part, err := writer.CreateFormFile("file", testFile)
-				if err != nil {
-					t.Error(err)
-				}
-				file, err := os.Open(testFile)
-				if err != nil {
-					t.Error(err)
-				}
-				defer file.Close()
-
-				img, _, err := image.Decode(file)
-				if err != nil {
-					t.Error("error decoding image", err)
-				}
-				ext := filepath.Ext(testFile)
-				switch ext {
-				case ".png":
-					if err = png.Encode(part, img); err != nil {
-						t.Error(err)
-					}
-				case ".gif":
-					if err = gif.Encode(part, img, nil); err != nil {
-						t.Error(err)
-					}
-				case ".jpg":
-					if err = jpeg.Encode(part, img, nil); err != nil {
-						t.Error(err)
-					}
-				}
-			}()
+			go pipeFile(writer, testFile, t, &wg)
 
 			// read fro the pipe which receives data
 			request := httptest.NewRequest("POST", "/", pr)
