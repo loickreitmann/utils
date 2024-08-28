@@ -86,10 +86,14 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 				if err != nil {
 					return nil, err
 				}
+				// set the uploaded file's original file names
+				uploadedFile.OriginalFilename = hdr.Filename
 
 				// check if the file type is allowed for upload receipt
 				isAllowed := u.isAllowedType(buffer)
 				if !isAllowed {
+					uploadedFile.Error = "file type not allowed"
+					uploadedFiles = append(uploadedFiles, &uploadedFile)
 					// return nil, errors.New("the uploaded file type is not allowed")
 					// instead of failing out, ignore this file, skip out of this iteration and continue
 					continue
@@ -100,8 +104,7 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 					return nil, err
 				}
 
-				// set the uploaded file's original and new file names
-				uploadedFile.OriginalFilename = hdr.Filename
+				// set the uploaded file's new file names
 				if renameFiles {
 					uploadedFile.NewFilename = fmt.Sprintf("%s%s", u.RandomString(32), filepath.Ext(hdr.Filename))
 				} else {
@@ -111,6 +114,7 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 				// prepare the output file
 				var outputFile *os.File
 				defer outputFile.Close()
+				// save the output file
 				if outputFile, err := os.Create(filepath.Join(uploadDir, uploadedFile.NewFilename)); err != nil {
 					return nil, err
 				} else {
