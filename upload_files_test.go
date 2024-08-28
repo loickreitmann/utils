@@ -53,6 +53,11 @@ var uploadTests = []struct {
 	},
 }
 
+const (
+	uploadsRoot     string = "./testdata/uploads"
+	uploadsBasePath string = uploadsRoot + "/"
+)
+
 func pipeFile(writer *multipart.Writer, testFile string, t *testing.T, wg *sync.WaitGroup) {
 	defer writer.Close()
 	defer wg.Done()
@@ -109,7 +114,7 @@ func TestUtils_UploadOneFile(t *testing.T) {
 		testUtils := New()
 		testUtils.AllowedTypes = ut.allowedTypes
 
-		uploadedFile, err := testUtils.UploadOneFile(request, "./testdata/uploads/", ut.renameFiles)
+		uploadedFile, err := testUtils.UploadOneFile(request, uploadsBasePath, ut.renameFiles)
 		if err != nil {
 			t.Error(err)
 		}
@@ -124,11 +129,11 @@ func TestUtils_UploadOneFile(t *testing.T) {
 			if _, fileErr := os.Stat(expectedFile); os.IsNotExist(fileErr) {
 				t.Errorf("[%s] expected file to exist: %s", ut.name, fileErr.Error())
 			}
-			// clean up
-			_ = os.Remove(expectedFile)
 		}
 		wg.Wait()
 	}
+	// CLEAN UP
+	_ = os.RemoveAll(uploadsRoot)
 }
 
 func TestUtils_UploadFiles(t *testing.T) {
@@ -151,7 +156,7 @@ func TestUtils_UploadFiles(t *testing.T) {
 			testUtils := New()
 			testUtils.AllowedTypes = ut.allowedTypes
 
-			uploadedFiles, err := testUtils.UploadFiles(request, "./testdata/uploads/", ut.renameFiles)
+			uploadedFiles, err := testUtils.UploadFiles(request, uploadsBasePath, ut.renameFiles)
 			if err != nil {
 				t.Error(err)
 			}
@@ -166,10 +171,10 @@ func TestUtils_UploadFiles(t *testing.T) {
 				if _, fileErr := os.Stat(expectedFile); os.IsNotExist(fileErr) {
 					t.Errorf("[%s] expected file to exist: %s", ut.name, fileErr.Error())
 				}
-				// clean up
-				_ = os.Remove(expectedFile)
 			}
 			wg.Wait()
 		}
 	}
+	// CLEAN UP
+	_ = os.RemoveAll(uploadsRoot)
 }
