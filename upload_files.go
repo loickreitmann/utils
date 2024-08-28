@@ -114,6 +114,11 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 				// prepare the output file
 				var outputFile *os.File
 				defer outputFile.Close()
+
+				// make sure the uploadDir exists
+				if err := u.MakeDirStructure([]string{uploadDir}); err != nil {
+					return nil, err
+				}
 				// save the output file
 				if outputFile, err := os.Create(filepath.Join(uploadDir, uploadedFile.NewFilename)); err != nil {
 					return nil, err
