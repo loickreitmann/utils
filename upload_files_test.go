@@ -88,6 +88,49 @@ func pipeFile(writer *multipart.Writer, testFile string, t *testing.T, wg *sync.
 		}
 	}
 }
+
+func TestUtils_UploadOneFile(t *testing.T) {
+	wg := sync.WaitGroup{}
+	for _, ut := range uploadTests {
+		// ARRANGE
+		testFile := ut.testFiles[0]
+		// set up a pipe to avoid buffering
+		pr, pw := io.Pipe()
+		writer := multipart.NewWriter(pw)
+		wg.Add(1)
+
+		go pipeFile(writer, testFile, t, &wg)
+
+		// read fro the pipe which receives data
+		request := httptest.NewRequest("POST", "/", pr)
+		request.Header.Add("Content-Type", writer.FormDataContentType())
+
+		// ACT
+		testUtils := New()
+		testUtils.AllowedTypes = ut.allowedTypes
+
+		uploadedFile, err := testUtils.UploadOneFile(request, "./testdata/uploads/", ut.renameFiles)
+		if err != nil {
+			t.Error(err)
+		}
+
+		// ASSERT
+		// Positive test: should not result in an error
+		if !ut.errorExpected {
+			if err != nil {
+				t.Errorf("[%s] error unexpected: %s", ut.name, err.Error())
+			}
+			expectedFile := fmt.Sprintf("./testdata/uploads/%s", uploadedFile.NewFilename)
+			if _, fileErr := os.Stat(expectedFile); os.IsNotExist(fileErr) {
+				t.Errorf("[%s] expected file to exist: %s", ut.name, fileErr.Error())
+			}
+			// clean up
+			_ = os.Remove(expectedFile)
+		}
+		wg.Wait()
+	}
+}
+
 func TestUtils_UploadFiles(t *testing.T) {
 	wg := sync.WaitGroup{}
 	for _, ut := range uploadTests {
