@@ -5,4 +5,5 @@ type UploadedFile struct {
 	NewFilename      string
 	OriginalFilename string
 	FileSize         int64
+	Error            string
 }
