@@ -70,6 +70,11 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 		return nil, errors.New("the uploaded file is too big")
 	}
 
+	// make sure the target uploadDir exists
+	if err := u.MakeDirStructure([]string{uploadDir}); err != nil {
+		return nil, err
+	}
+
 	uploadedFiles, err = func(uploadedFiles []*UploadedFile) ([]*UploadedFile, error) {
 		for _, fileHeaders := range req.MultipartForm.File {
 			for _, hdr := range fileHeaders {
@@ -115,10 +120,6 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 				var outputFile *os.File
 				defer outputFile.Close()
 
-				// make sure the uploadDir exists
-				if err := u.MakeDirStructure([]string{uploadDir}); err != nil {
-					return nil, err
-				}
 				// save the output file
 				if outputFile, err := os.Create(filepath.Join(uploadDir, uploadedFile.NewFilename)); err != nil {
 					return nil, err
