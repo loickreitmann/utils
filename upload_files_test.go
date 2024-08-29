@@ -1,4 +1,4 @@
-package utils
+package utils_test
 
 import (
 	"fmt"
@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"sync"
 	"testing"
+
+	"github.com/loickreitmann/utils"
 )
 
 // table test setup
@@ -111,7 +113,7 @@ func TestUtils_UploadOneFile(t *testing.T) {
 		request.Header.Add("Content-Type", writer.FormDataContentType())
 
 		// ACT
-		testUtils := New()
+		testUtils := utils.New()
 		testUtils.AllowedTypes = ut.allowedTypes
 
 		uploadedFile, err := testUtils.UploadOneFile(request, uploadsBasePath, ut.renameFiles)
@@ -153,7 +155,7 @@ func TestUtils_UploadFiles(t *testing.T) {
 			request.Header.Add("Content-Type", writer.FormDataContentType())
 
 			// ACT
-			testUtils := New()
+			testUtils := utils.New()
 			testUtils.AllowedTypes = ut.allowedTypes
 
 			uploadedFiles, err := testUtils.UploadFiles(request, uploadsBasePath, ut.renameFiles)
