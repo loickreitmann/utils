@@ -25,7 +25,7 @@ func (u *Utils) removeAccents(s string) string {
 	return bldr.String()
 }
 
-// The ToSlug function converts accented characters to their unaccented versions,
+// The TextToSlug function converts accented characters to their unaccented versions,
 // replaces all non-alphanumeric characters with dashes, trims redundant dashes,
 // and converts the string to lowercase.
 // This approach makes the slug both URL-friendly and human-readable.

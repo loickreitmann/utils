@@ -27,13 +27,14 @@ Uploads one or more files from a multipart form submission contained within an `
 ```go
 func (u *Utils) MakeDirStructure(pathsToBeMade []string) error
 ```
-MakeDirStructure is a convenience method of the `utils` package which uses `os.MkdirAll` to creates
-a directory structure based on the slice of path strings provided. It returns nil when all the
-directories are successfully created, or else returns an error. The permission bits default to 0755,
-and are used for all directories created. If a path is already a directory, os.MkdirAll does nothing
-and returns nil, so MakeDirStructure will also return nil. If there's a permission issue encountered
-for any of the paths, the error reported by os.MkdirAll will be collected, and MakeDirStructure will
-return all encountered those errors as one.
+MakeDirStructure is a convenience method of the `utils` package which uses `os.MkdirAll` to creates a directory structure based on the slice of path strings provided. It returns nil when all the directories are successfully created, or else returns an error. The permission bits default to 0755, and are used for all directories created. If a path is already a directory, os.MkdirAll does nothing and returns nil, so MakeDirStructure will also return nil. If there's a permission issue encountered for any of the paths, the error reported by os.MkdirAll will be collected, and MakeDirStructure will return all encountered those errors as one.
+
+##### TextToSlug()
+The TextToSlug function converts accented characters to their unaccented versions, replaces all non-alphanumeric characters with dashes, trims redundant dashes, and converts the string to lowercase.
+This approach makes the slug both URL-friendly and human-readable.
+```go
+func (u *Utils) TextToSlug(input string) string 
+```
 
 ---
 ## Installation
