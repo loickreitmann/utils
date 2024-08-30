@@ -11,8 +11,8 @@ func ExampleUtils_RandomString() {
 
 	str := u.RandomString(22)
 
-	fmt.Println("Random string of 22 characters:", str)
+	fmt.Printf("Random string has %d characters.\n", len(str))
 
 	// Output:
-	// Random string of 22 characters: StkgGpQ+u0lQL+q!5@BfsA
+	// Random string has 22 characters.
 }
