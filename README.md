@@ -36,6 +36,13 @@ This approach makes the slug both URL-friendly and human-readable.
 func (u *Utils) TextToSlug(input string) string 
 ```
 
+##### 6. ForceFileDownload()
+ForceFileDownload forces the browser to avoid displaying it in the browser window by setting the Content-Disposition header. It also allows specifying a custom display name for the downloaded file.
+```go
+func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, fileDir, file, displayName string) 
+```
+
+
 ---
 ## Installation
 
