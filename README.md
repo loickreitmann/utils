@@ -43,3 +43,4 @@ func (u *Utils) TextToSlug(input string) string
 
 ---
 ## Usage
+See the example test files.
