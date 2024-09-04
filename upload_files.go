@@ -59,6 +59,9 @@ func (u *Utils) UploadOneFile(req *http.Request, uploadDir string, rename ...boo
 // files a random name. It returns a slice of UploadedFile structs, and potentially an error.
 // If the optional last parameter is set to true, the files won't be renamed.
 func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
+	if u.MaxUploadFileSize < 1 {
+		u.MaxUploadFileSize = gB
+	}
 	renameFiles := true
 	if len(rename) > 0 {
 		renameFiles = rename[0]
