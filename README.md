@@ -42,6 +42,11 @@ ForceFileDownload forces the browser to avoid displaying it in the browser windo
 func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, fileDir, file, displayName string) 
 ```
 
+##### 7. ReadJSON()
+ReadJSON tries to read the body of a request and converts from json into a go data variable.
+```go
+func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{}) error 
+```
 
 ---
 ## Installation
@@ -50,4 +55,4 @@ func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, fileDi
 
 ---
 ## Usage
-See the example test files.
+See the example test files, or the package doumentation on the [Go Package Discovery](https://pkg.go.dev/github.com/loickreitmann/utils) site.

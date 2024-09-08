@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// ReadJSON tries to read the body of a request and converts from json into a go data variable
 func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{}) error {
 	if u.MaxJSONReadSize == 0 {
 		u.MaxJSONReadSize = mB
