@@ -30,7 +30,7 @@ func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{
 		case errors.As(err, &syntaxError):
 			return fmt.Errorf("body contains badly formed json at character %d", syntaxError.Offset)
 		case errors.Is(err, io.ErrUnexpectedEOF):
-			return errors.New("body contains badly formed json")
+			return errors.New("body contains unterminated json")
 		case errors.As(err, &unmarshalTypeError):
 			if unmarshalTypeError.Field != "" {
 				return fmt.Errorf("body contains incorrect json type for field %q", unmarshalTypeError.Field)
@@ -42,7 +42,7 @@ func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{
 			fieldName := strings.TrimPrefix(err.Error(), "json: unknown field")
 			return fmt.Errorf("body contains unknown key %s", fieldName)
 		case err.Error() == "http: request body too large":
-			return fmt.Errorf("body must not be larger than%d bytes", u.MaxJSONReadSize)
+			return fmt.Errorf("body must not be larger than %d bytes", u.MaxJSONReadSize)
 		case errors.As(err, &invalidUnmarshalError):
 			return fmt.Errorf("error unmashalling json: %s", err.Error())
 		default:
