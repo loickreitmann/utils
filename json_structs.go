@@ -12,6 +12,6 @@ type JSONError struct {
 
 // JSONResponse is the type used for sending JSON
 type JSONResponse struct {
-	Error JSONError   `json:"error,omitempty"`
+	Error interface{} `json:"error,omitempty"`
 	Data  interface{} `json:"data,omitempty"`
 }
