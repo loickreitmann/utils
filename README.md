@@ -60,6 +60,12 @@ ErrorJSON takes an `error` and optionally an http `status` code, then generates 
 func (u *Utils) ErrorJSON(w http.ResponseWriter, err error, status ...int) error
 ```
 
+##### 10. PushJSONToRemote()
+PushJSONToRemote sends arbitrary `data` to a specified URL as JSON, and returns the `response` and `status` code, or an `error` if any.
+The `client` parameter is optional. If none is specified, it uses the standard library's `http.Client`.
+```go
+func (u *Utils) PushJSONToRemote(uri string, method string, data interface{}, client ...*http.Client) (*http.Response, int, error)
+```
 
 ---
 ## Installation
