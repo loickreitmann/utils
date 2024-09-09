@@ -54,6 +54,13 @@ WriteJSON takes a response `status` code and arbitrary `data`, then generates an
 func (u *Utils) WriteJSON(w http.ResponseWriter, status int, data interface{}, headers ...http.Header) error
 ```
 
+##### 9. ErrorJSON()
+ErrorJSON takes an `error` and optionally an http `status` code, then generates and sends a json formatted error http response. If no `status` code is passed, `http.StatusBadRequest` is the defualt used.
+```go
+func (u *Utils) ErrorJSON(w http.ResponseWriter, err error, status ...int) error
+```
+
+
 ---
 ## Installation
 
