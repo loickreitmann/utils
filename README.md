@@ -49,19 +49,19 @@ func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{
 ```
 
 ##### 8. WriteJSON()
-WriteJSON takes a response `status` code and arbitrary `data`, then generates and sends json in the http response to the client.
+WriteJSON takes a response, an `httpStatus` code, and arbitrary `data`, then generates and sends json in the http response to the client.
 ```go
-func (u *Utils) WriteJSON(w http.ResponseWriter, status int, data interface{}, headers ...http.Header) error
+func (u *Utils) WriteJSON(w http.ResponseWriter, httpStatus int, data interface{}, headers ...http.Header) error
 ```
 
 ##### 9. ErrorJSON()
-ErrorJSON takes an `error` and optionally an http `status` code, then generates and sends a json formatted error http response. If no `status` code is passed, `http.StatusBadRequest` is the defualt used.
+ErrorJSON takes an `error` and optionally an http `httpStatus` code, then generates and sends a json formatted error http response. If no `httpStatus` code is passed, `http.StatusBadRequest` is the defualt used.
 ```go
-func (u *Utils) ErrorJSON(w http.ResponseWriter, err error, status ...int) error
+func (u *Utils) ErrorJSON(w http.ResponseWriter, err error, httpStatus ...int) error
 ```
 
 ##### 10. PushJSONToRemote()
-PushJSONToRemote sends arbitrary `data` to a specified URL as JSON, and returns the `response` and `status` code, or an `error` if any.
+PushJSONToRemote sends arbitrary `data` to a specified URL as JSON, and returns the `response` and http `status` code, or an `error` if any.
 The `client` parameter is optional. If none is specified, it uses the standard library's `http.Client`.
 ```go
 func (u *Utils) PushJSONToRemote(uri string, method string, data interface{}, client ...*http.Client) (*http.Response, int, error)

@@ -5,8 +5,8 @@ import (
 	"net/http"
 )
 
-// WriteJSON takes a response status code and arbitrary data and generates and sends json in the http response to the client
-func (u *Utils) WriteJSON(w http.ResponseWriter, status int, data interface{}, headers ...http.Header) error {
+// WriteJSON takes a response, an httpStatus code, and arbitrary data and generates and sends json in the http response to the client
+func (u *Utils) WriteJSON(w http.ResponseWriter, httpStatus int, data interface{}, headers ...http.Header) error {
 	output, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -18,7 +18,7 @@ func (u *Utils) WriteJSON(w http.ResponseWriter, status int, data interface{}, h
 		}
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
+	w.WriteHeader(httpStatus)
 	_, err = w.Write(output)
 	if err != nil {
 		return err

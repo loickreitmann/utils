@@ -7,7 +7,7 @@ import (
 )
 
 // PushJSONToRemote sends arbitrary data to a specified URL as JSON, and returns
-// the response and status code, or an error if any.
+// the response and http status code, or an error if any.
 // The client parameter is optional. If none is specified, it uses the standard
 // library's http.Client.
 func (u *Utils) PushJSONToRemote(uri string, method string, data interface{}, client ...*http.Client) (*http.Response, int, error) {
