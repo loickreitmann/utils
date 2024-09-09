@@ -51,7 +51,7 @@ func TestUtils_ReadJSON(t *testing.T) {
 
 		// ACT
 		// create a request with the body
-		req, err := http.NewRequest("POST", "/", bytes.NewReader([]byte(testCase.json)))
+		req, err := http.NewRequest(http.MethodPost, "/", bytes.NewReader([]byte(testCase.json)))
 		if err != nil {
 			t.Log("error:", err.Error())
 		}

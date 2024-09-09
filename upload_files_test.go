@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"io"
 	"mime/multipart"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
@@ -109,7 +110,7 @@ func TestUtils_UploadOneFile(t *testing.T) {
 		go pipeFile(writer, testFile, t, &wg)
 
 		// read fro the pipe which receives data
-		request := httptest.NewRequest("POST", "/", pr)
+		request := httptest.NewRequest(http.MethodPost, "/", pr)
 		request.Header.Add("Content-Type", writer.FormDataContentType())
 
 		// ACT
