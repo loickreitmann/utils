@@ -48,6 +48,12 @@ ReadJSON tries to read the body of a request and converts from json into a go `d
 func (u *Utils) ReadJSON(w http.ResponseWriter, r *http.Request, data interface{}) error 
 ```
 
+##### 8. WriteJSON()
+WriteJSON takes a response `status` code and arbitrary `data`, then generates and sends json in the http response to the client.
+```go
+func (u *Utils) WriteJSON(w http.ResponseWriter, status int, data interface{}, headers ...http.Header) error
+```
+
 ---
 ## Installation
 
