@@ -41,13 +41,13 @@ func (u *Utils) isAllowedType(buffer []byte) bool {
 
 // UploadOneFile is a convenience method that calls UploadFiles, but expects only one file to
 // be in the upload.
-func (u *Utils) UploadOneFile(req *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) {
+func (u *Utils) UploadOneFile(r *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) {
 	renameFile := true
 	if len(rename) > 0 {
 		renameFile = rename[0]
 	}
 
-	uploadedFiles, err := u.UploadFiles(req, uploadDir, renameFile)
+	uploadedFiles, err := u.UploadFiles(r, uploadDir, renameFile)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (u *Utils) UploadOneFile(req *http.Request, uploadDir string, rename ...boo
 // UploadFiles uploads one or more files to the specified `uploadDir` directory. It gives the
 // files a random name. It returns a slice of UploadedFile structs, and potentially an error.
 // If the optional last parameter is set to true, the files won't be renamed.
-func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
+func (u *Utils) UploadFiles(r *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
 	if u.MaxUploadFileSize < 1 {
 		u.MaxUploadFileSize = gB
 	}
@@ -68,7 +68,7 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 	}
 
 	var uploadedFiles []*UploadedFile
-	err := req.ParseMultipartForm(int64(u.MaxUploadFileSize))
+	err := r.ParseMultipartForm(int64(u.MaxUploadFileSize))
 	if err != nil {
 		return nil, errors.New("the uploaded file is too big")
 	}
@@ -79,7 +79,7 @@ func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool)
 	}
 
 	uploadedFiles, err = func(uploadedFiles []*UploadedFile) ([]*UploadedFile, error) {
-		for _, fileHeaders := range req.MultipartForm.File {
+		for _, fileHeaders := range r.MultipartForm.File {
 			for _, hdr := range fileHeaders {
 				var uploadedFile UploadedFile
 				currentFile, err := hdr.Open()

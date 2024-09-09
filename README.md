@@ -13,7 +13,7 @@ Generates a random string of the given `length`.
 
 ##### 2. UploadOneFile()
 ```go
-func (u *Utils) UploadOneFile(req *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) 
+func (u *Utils) UploadOneFile(r *http.Request, uploadDir string, rename ...bool) (*UploadedFile, error) 
 ```
 A convenience method that calls `UploadFiles()`, but expects only one file to be in the upload.
 
