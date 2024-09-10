@@ -69,16 +69,8 @@ var (
 			name:          "cyclic data structure to cause marshalling error",
 			errorExpected: true,
 			status:        http.StatusForbidden,
-			payload: func() utils.JSONResponse {
-				node1 := &Node{Value: "first"}
-				node2 := &Node{Value: "second", NextNode: node1}
-				node1.NextNode = node2
-				jsonResp := utils.JSONResponse{
-					Data: node1,
-				}
-				return jsonResp
-			}(),
-			headerProps: nil,
+			payload:       cyclicDataStructure(),
+			headerProps:   nil,
 		},
 	}
 )
