@@ -6,6 +6,7 @@ package utils
 // have access to all the methods with the *Utils receiver.
 type Utils struct {
 	UploadOptions
+	JSONOptions
 }
 
 // Constructor for Utils struct that defines default options necessary when using
@@ -17,6 +18,10 @@ func New() *Utils {
 		UploadOptions{
 			MaxUploadFileSize: gB,
 			AllowedTypes:      []string{"image/jpeg", "image/png", "image/gif"},
+		},
+		JSONOptions{
+			MaxJSONReadSize:    mB,
+			AllowUnknownFields: false,
 		},
 	}
 }

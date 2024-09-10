@@ -1,0 +1,28 @@
+name: Run Go Unit Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.0
+      - name: Install dependencies
+        run: go mod tidy
+      - name: Run Tests with Coverage
+        run: go test -timeout 30s -coverprofile=go-code-coverage.out ./...
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2.3.0
+        with:
+          # github-token: ${\{ secrets.GITHUB_TOKEN }}
+          # repo-token: ${\{ secrets.COVERALLS_REPO_TOKEN }}
+          path-to-lcov: './go-code-coverage.out'
+  

@@ -1,6 +1,7 @@
 package utils_test
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/gif"
@@ -8,6 +9,7 @@ import (
 	"image/png"
 	"io"
 	"mime/multipart"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
@@ -24,6 +26,7 @@ var uploadTests = []struct {
 	testFiles     []string
 	renameFiles   bool
 	errorExpected bool
+	maxUploadSize int
 }{
 	{
 		name:          "allowed, not renamed",
@@ -44,7 +47,15 @@ var uploadTests = []struct {
 		allowedTypes:  []string{"image/jpeg", "image/gif"},
 		testFiles:     []string{"./testdata/upload_test.png"},
 		renameFiles:   false,
+		errorExpected: false,
+	},
+	{
+		name:          "file too big",
+		allowedTypes:  []string{"image/jpeg", "image/png", "image/gif"},
+		testFiles:     []string{"./testdata/upload_test.png"},
+		renameFiles:   false,
 		errorExpected: true,
+		maxUploadSize: 1,
 	},
 	{
 		name:          "all types allowed, not renamed",
@@ -100,6 +111,9 @@ func TestUtils_UploadOneFile(t *testing.T) {
 	wg := sync.WaitGroup{}
 	for _, ut := range uploadTests {
 		// ARRANGE
+		if ut.maxUploadSize > 0 {
+			continue
+		}
 		testFile := ut.testFiles[0]
 		// set up a pipe to avoid buffering
 		pr, pw := io.Pipe()
@@ -109,7 +123,7 @@ func TestUtils_UploadOneFile(t *testing.T) {
 		go pipeFile(writer, testFile, t, &wg)
 
 		// read fro the pipe which receives data
-		request := httptest.NewRequest("POST", "/", pr)
+		request := httptest.NewRequest(http.MethodPost, "/", pr)
 		request.Header.Add("Content-Type", writer.FormDataContentType())
 
 		// ACT
@@ -146,33 +160,40 @@ func TestUtils_UploadFiles(t *testing.T) {
 			// set up a pipe to avoid buffering
 			pr, pw := io.Pipe()
 			writer := multipart.NewWriter(pw)
-			wg.Add(1)
 
-			go pipeFile(writer, testFile, t, &wg)
-
-			// read fro the pipe which receives data
-			request := httptest.NewRequest("POST", "/", pr)
+			var request *http.Request
+			if ut.maxUploadSize > 0 {
+				// define a dummy large size request
+				largeBody := bytes.Repeat([]byte("a"), 1024)
+				request = httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(largeBody))
+			} else {
+				wg.Add(1)
+				go pipeFile(writer, testFile, t, &wg)
+				// read from the pipe which receives data
+				request = httptest.NewRequest(http.MethodPost, "/", pr)
+			}
 			request.Header.Add("Content-Type", writer.FormDataContentType())
 
 			// ACT
 			testUtils := utils.New()
 			testUtils.AllowedTypes = ut.allowedTypes
-
-			uploadedFiles, err := testUtils.UploadFiles(request, uploadsBasePath, ut.renameFiles)
-			if err != nil {
-				t.Error(err)
+			if ut.maxUploadSize > 0 {
+				testUtils.MaxUploadFileSize = ut.maxUploadSize
 			}
 
+			uploadedFiles, err := testUtils.UploadFiles(request, uploadsBasePath, ut.renameFiles)
 			// ASSERT
-			// Positive test: should not result in an error
 			if !ut.errorExpected {
 				if err != nil {
-					t.Errorf("[%s] error unexpected: %s", ut.name, err.Error())
+					t.Errorf("[%s] error not expected: %s", ut.name, err.Error())
 				}
 				expectedFile := fmt.Sprintf("./testdata/uploads/%s", uploadedFiles[0].NewFilename)
 				if _, fileErr := os.Stat(expectedFile); os.IsNotExist(fileErr) {
 					t.Errorf("[%s] expected file to exist: %s", ut.name, fileErr.Error())
 				}
+			}
+			if ut.errorExpected && err == nil {
+				t.Errorf("[%s] error expected but none received", ut.name)
 			}
 			wg.Wait()
 		}

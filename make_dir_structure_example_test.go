@@ -2,6 +2,7 @@ package utils_test
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/loickreitmann/utils"
 )
@@ -26,6 +27,7 @@ func ExampleUtils_MakeDirStructure() {
 	} else {
 		fmt.Println("Created the following directories:")
 		u.CrawlLogPaths("05_test")
+		_ = os.RemoveAll("./05_test")
 	}
 
 	// Output:
