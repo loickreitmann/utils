@@ -36,7 +36,7 @@ func (u *Utils) LoadEnvVarsFromFile(filename string) error {
 	// read in the file
 	file, err := os.ReadFile(filename)
 	if err != nil {
-		return fmt.Errorf("error reading from %s file: %v\n", filename, err)
+		return fmt.Errorf("error reading from %s file: %v", filename, err)
 	}
 
 	// convert it to a string
