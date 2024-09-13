@@ -49,3 +49,12 @@ func (u *Utils) LoadEnvVarsFromFile(filename string) error {
 
 	return nil
 }
+
+func (u *Utils) LoadEnvVarsFromEmbed(goEmbedReadFile string) error {
+	// parse it's key-value-pairs into env vars
+	if err := u.parseEnvVars(goEmbedReadFile); err != nil {
+		return err
+	}
+
+	return nil
+}
