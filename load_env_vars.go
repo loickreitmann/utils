@@ -44,7 +44,7 @@ func (u *Utils) LoadEnvVarsFromFile(filename string) error {
 
 	// parse it's key-value-pairs into env vars
 	if err := u.parseEnvVars(envVars); err != nil {
-		return fmt.Errorf(err.Error())
+		return err
 	}
 
 	return nil
