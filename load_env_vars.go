@@ -32,6 +32,9 @@ func (u *Utils) parseEnvVars(envFile string) error {
 	return nil
 }
 
+// LoadEnvVarsFromFile expects a string represnting the path to the environment variable file.
+// This approach relies on the environment variables file existing in the file system and being
+// readable.
 func (u *Utils) LoadEnvVarsFromFile(filename string) error {
 	// read in the file
 	file, err := os.ReadFile(filename)
@@ -50,6 +53,10 @@ func (u *Utils) LoadEnvVarsFromFile(filename string) error {
 	return nil
 }
 
+// LoadEnvVarsFromEmbed expects a string resulting from having uses Go's //go:embed directive to import an
+// embedded environment variable file.
+// This approach relies on the environment variables file being embedded directly in the binary, which might
+// not be ideal for sensitive data in some cases.
 func (u *Utils) LoadEnvVarsFromEmbed(goEmbedReadFile string) error {
 	// parse it's key-value-pairs into env vars
 	if err := u.parseEnvVars(goEmbedReadFile); err != nil {
