@@ -31,3 +31,21 @@ func (u *Utils) parseEnvVars(envFile string) error {
 	}
 	return nil
 }
+
+func (u *Utils) LoadEnvVarsFromFile(filename string) error {
+	// read in the file
+	file, err := os.ReadFile(filename)
+	if err != nil {
+		return fmt.Errorf("error reading from %s file: %v\n", filename, err)
+	}
+
+	// convert it to a string
+	envVars := string(file)
+
+	// parse it's key-value-pairs into env vars
+	if err := u.parseEnvVars(envVars); err != nil {
+		return fmt.Errorf(err.Error())
+	}
+
+	return nil
+}
