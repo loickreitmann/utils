@@ -70,6 +70,20 @@ The `client` parameter is optional. If none is specified, it uses the standard l
 func (u *Utils) PushJSONToRemote(uri string, method string, data interface{}, client ...*http.Client) (*http.Response, int, error)
 ```
 
+##### 11. LoadEnvVarsFromFile()
+LoadEnvVarsFromFile expects a string represnting the path to the environment variable file.
+This approach relies on the environment variables file existing in the file system and being readable.
+```go
+func (u *Utils) LoadEnvVarsFromFile(filename string) error
+```
+
+##### 12. LoadEnvVarsFromEmbed()
+LoadEnvVarsFromEmbed expects a string resulting from having uses Go's `//go:embed` directive to import an embedded environment variable file.
+This approach relies on the environment variables file being embedded directly in the binary, which might not be ideal for sensitive data in some cases.
+```go
+func (u *Utils) LoadEnvVarsFromEmbed(goEmbedReadFile string) error
+```
+
 ---
 ## Installation
 
