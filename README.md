@@ -1,6 +1,6 @@
 # Utils Module
 
-[![Coverage Status](https://coveralls.io/repos/github/loickreitmann/utils/badge.svg)](https://coveralls.io/github/loickreitmann/utils)
+[![Go Reference](https://pkg.go.dev/badge/github.com/loickreitmann/utils.svg)](https://pkg.go.dev/github.com/loickreitmann/utils) [![Coverage Status](https://coveralls.io/repos/github/loickreitmann/utils/badge.svg)](https://coveralls.io/github/loickreitmann/utils)
 
 Module of simple, well-tested, and reusable Go utilities. Inspired by [Trevor Sawler](https://www.udemy.com/user/trevor-sawler/)'s "[Building a Module in Go.](https://www.udemy.com/course/building-a-module-in-go-golang)" Udemy course.
 
