@@ -34,6 +34,7 @@ func TestUtils_LoadEnvVarsFromEmbed(t *testing.T) {
 		}
 	}
 }
+
 func TestUtils_LoadEnvVarsFromFile(t *testing.T) {
 	// ARRANGE
 	var testUtils utils.Utils
@@ -49,5 +50,18 @@ func TestUtils_LoadEnvVarsFromFile(t *testing.T) {
 		if osKey != value {
 			t.Errorf("epected %s to be %s; got %s", key, value, osKey)
 		}
+	}
+}
+
+func TestUtils_LoadEnvVarsFromFile_NoFile(t *testing.T) {
+	// ARRANGE
+	var testUtils utils.Utils
+
+	// ACT
+	err := testUtils.LoadEnvVarsFromFile("testdata/.env.bad.example")
+
+	// ASSERT
+	if err == nil {
+		t.Error("Expected a \"no such file or directory\" error but got none")
 	}
 }
