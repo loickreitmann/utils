@@ -24,12 +24,12 @@ func (u *Utils) sanitizeFileName(name string) string {
 // ForceFileDownload forces the browser to avoid displaying it in the browser window
 // by setting the Content-Disposition header. It also allows specifying a custom
 // display name for the downloaded file.
-func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, fileDir, file, displayName string) {
+func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, pathToFile, displayName string) {
 	// Ensure file paths are safe and use the correct path separator
-	fullFilePath := filepath.Join(fileDir, filepath.Clean(file))
+	cleanFilePath := filepath.Clean(pathToFile)
 
 	// Attempt to detect the file's MIME type
-	mimeType := mime.TypeByExtension(filepath.Ext(file))
+	mimeType := mime.TypeByExtension(filepath.Ext(cleanFilePath))
 	if mimeType == "" {
 		mimeType = "application/octet-stream" // Default to binary stream if unknown
 	}
@@ -40,5 +40,5 @@ func (u *Utils) ForceFileDownload(w http.ResponseWriter, r *http.Request, fileDi
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", displayName))
 
 	// Attempt to serve the file
-	http.ServeFile(w, r, fullFilePath)
+	http.ServeFile(w, r, cleanFilePath)
 }

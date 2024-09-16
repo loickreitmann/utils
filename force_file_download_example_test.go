@@ -31,5 +31,5 @@ func (ffde *forceFileDownloadExample) routes() http.Handler {
 func (ffde *forceFileDownloadExample) download(resw http.ResponseWriter, req *http.Request) {
 	var u utils.Utils
 
-	u.ForceFileDownload(resw, req, "./testdata/force_file_download", "download_test.jpg", "Be like the Mandalorian, this is the way.jpg")
+	u.ForceFileDownload(resw, req, "./testdata/force_file_download/download_test.jpg", "Be like the Mandalorian, this is the way.jpg")
 }

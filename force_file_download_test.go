@@ -29,7 +29,7 @@ func TestUtils_ForceFileDownload(t *testing.T) {
 		req, _ := http.NewRequest("GET", "/", nil)
 
 		// ACT
-		utilsTest.ForceFileDownload(respRec, req, "./testdata", testFile.fileName, testFile.displayName)
+		utilsTest.ForceFileDownload(respRec, req, fmt.Sprintf("./testdata/%s", testFile.fileName), testFile.displayName)
 		resp := respRec.Result()
 		defer resp.Body.Close()
 
