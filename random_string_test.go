@@ -45,32 +45,11 @@ func TestUtils_RandomString_CustomeSeed(t *testing.T) {
 		if len(actualStrs[i]) != int(math.Abs(float64(expectedLens[i]))) {
 			t.Errorf("wrong string length; expected %d, got %d", expectedLens[i], len(actualStrs[i]))
 		}
-		uniqs := uniqueRunes(actualStrs[i])
 		if !containsAllRunes(customSeed, uniqs) {
+		uniqs := testUtils.UniqueRunes(actualStrs[i])
 			t.Error("characters found in string not contained i seed set")
 		}
 	}
-}
-
-func uniqueRunes(s string) []rune {
-	// Create a map to track unique runes
-	seen := make(map[rune]bool)
-
-	// Create a slice to store the unique runes
-	var unique []rune
-
-	// Iterate over the string, character by character
-	for _, r := range s {
-		// Check if the rune has already been encountered
-		if !seen[r] {
-			// Mark the rune as seen
-			seen[r] = true
-			// Append the rune to the unique slice
-			unique = append(unique, r)
-		}
-	}
-
-	return unique
 }
 
 // Function to check if all runes in `subset` are contained in `set`

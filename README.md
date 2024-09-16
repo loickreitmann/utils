@@ -91,6 +91,12 @@ This approach relies on the environment variables file being embedded directly i
 func (u *Utils) LoadEnvVarsFromEmbed(goEmbedReadFile string) error
 ```
 
+#### UniqueRunes()
+UniqueRunes takes a string and converts it to a slice of unique runes. This method preserves the order of the first appearance of runes in the input string. Because Go's rune type handles Unicode characters properly, this solution works correctly even with strings containing non-ASCII characters.
+```go
+func (u *Utils) UniqueRunes(s string) []rune 
+```
+
 ---
 ## Installation
 
