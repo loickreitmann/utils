@@ -45,32 +45,9 @@ func TestUtils_RandomString_CustomeSeed(t *testing.T) {
 		if len(actualStrs[i]) != int(math.Abs(float64(expectedLens[i]))) {
 			t.Errorf("wrong string length; expected %d, got %d", expectedLens[i], len(actualStrs[i]))
 		}
-		if !containsAllRunes(customSeed, uniqs) {
 		uniqs := testUtils.UniqueRunes(actualStrs[i])
+		if !testUtils.ContainsAllRunes(customSeed, uniqs) {
 			t.Error("characters found in string not contained i seed set")
 		}
 	}
-}
-
-// Function to check if all runes in `subset` are contained in `set`
-func containsAllRunes(set, subset []rune) bool {
-	// Create a map to count occurrences of each rune in `set`
-	runeCount := make(map[rune]int)
-
-	// Count occurrences of each rune in `set`
-	for _, r := range set {
-		runeCount[r]++
-	}
-
-	// Check if all runes in `subset` are present in `runeCount` with sufficient count
-	for _, r := range subset {
-		if runeCount[r] == 0 {
-			// If a rune is not present or count is insufficient, return false
-			return false
-		}
-		runeCount[r]--
-	}
-
-	// All runes in `subset` are contained in `set`
-	return true
 }

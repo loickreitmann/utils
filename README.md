@@ -97,6 +97,12 @@ UniqueRunes takes a string and converts it to a slice of unique runes. This meth
 func (u *Utils) UniqueRunes(s string) []rune 
 ```
 
+#### ContainsAllRunes()
+ContainsAllRunes checks if all runes in a `subset` slice are contained in `set` slice. This method correctly handles cases where runes are duplicated, both in the set and subset slices. This works with Unicode characters, as Go's rune type properly supports Unicode.
+```go
+func (u *Utils) ContainsAllRunes(set, subset []rune) bool
+```
+
 ---
 ## Installation
 
