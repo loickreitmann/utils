@@ -7,6 +7,9 @@ import (
 	"path/filepath"
 )
 
+// CrawlLogPaths: given a starting path, it will crawl the directory
+// hierachy below that path, and output a log message of each full
+// path from the specified starting path.
 func (u *Utils) CrawlLogPaths(root string) error {
 	return filepath.Walk(root, walkFunc)
 }
