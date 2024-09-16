@@ -19,7 +19,7 @@ func TestUtils_CrawlLogPaths(t *testing.T) {
 		// ACT
 		err := testUtils.CrawlLogPaths(testPath)
 
-		// ASSESS
+		// ASSERT
 		switch expectation {
 		case "pass":
 			if err != nil {

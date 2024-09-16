@@ -61,7 +61,7 @@ func TestUtils_PushJSONToRemote(t *testing.T) {
 		})
 		// ACT
 		_, _, err := testUtils.PushJSONToRemote("https://example.com/some/api", http.MethodPost, pushCase.payload, client)
-		// ASSESS
+		// ASSERT
 		if !pushCase.expectError && err != nil {
 			t.Errorf("[%s]: expected no error but got one: %v", pushCase.name, err)
 		}

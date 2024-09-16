@@ -93,7 +93,7 @@ func TestUtils_WriteJSON(t *testing.T) {
 			err = testUtils.WriteJSON(rr, testCase.status, testCase.payload)
 		}
 
-		// ASSESS
+		// ASSERT
 		if !testCase.errorExpected && err != nil {
 			t.Errorf("[%s]: failed to write JSON: %v", testCase.name, err)
 		}
