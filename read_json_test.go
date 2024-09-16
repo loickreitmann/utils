@@ -68,7 +68,7 @@ func TestUtils_ReadJSON(t *testing.T) {
 			t.Log(err.Error())
 		}
 
-		// ASSESS
+		// ASSERT
 		if testCase.errorExpected && err == nil {
 			t.Errorf("[%s]: error expected, but none received", testCase.name)
 		}

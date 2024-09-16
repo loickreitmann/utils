@@ -29,7 +29,7 @@ func TestUtils_ErrorJSON(t *testing.T) {
 		// ACT
 		err := testUtils.ErrorJSON(rr, errorCase.err, errorCase.code)
 
-		// ASSESS
+		// ASSERT
 		if err != nil {
 			t.Errorf("[%s]: unexpected error: %v", errorCase.name, err.Error())
 		}
