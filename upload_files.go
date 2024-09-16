@@ -55,9 +55,10 @@ func (u *Utils) UploadOneFile(r *http.Request, uploadDir string, rename ...bool)
 	return uploadedFiles[0], nil
 }
 
-// UploadFiles uploads one or more files to the specified `uploadDir` directory. It gives the
-// files a random name. It returns a slice of UploadedFile structs, and potentially an error.
-// If the optional last parameter is set to true, the files won't be renamed.
+// UploadFiles uploads one or more files from a multipart form submission contained within
+// an `http.Request` to the specified `uploadDir` directory. It gives the files a random name.
+// It returns a slice of `UploadedFile` structs, and potentially an `error`. If the optional
+// last parameter is set to `true`, the files won't be renamed.
 func (u *Utils) UploadFiles(r *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error) {
 	if u.MaxUploadFileSize < 1 {
 		u.MaxUploadFileSize = gB

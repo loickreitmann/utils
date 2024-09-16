@@ -21,10 +21,10 @@ func (u *Utils) UploadOneFile(r *http.Request, uploadDir string, rename ...bool)
 A convenience method that calls `UploadFiles()`, but expects only one file to be in the upload.
 
 ##### 3. UploadFiles()
+UploadFiles uploads one or more files from a multipart form submission contained within an `http.Request` to the specified `uploadDir` directory. It gives the files a random name. It returns a slice of `UploadedFile` structs, and potentially an `error`. If the optional last parameter is set to `true`, the files won't be renamed.
 ```go
 func (u *Utils) UploadFiles(req *http.Request, uploadDir string, rename ...bool) ([]*UploadedFile, error)
 ```
-Uploads one or more files from a multipart form submission contained within an `http.Request` to the specified `uploadDir` directory. It gives the files a random name. It returns a slice of `UploadedFile` structs, and potentially an `error`. If the optional last parameter is set to `true`, the files won't be renamed.
 
 ##### 4. MakeDirStructure()
 ```go
